@@ -17,6 +17,7 @@
 package io.pivotal.literx;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.function.Supplier;
 
 import io.pivotal.literx.domain.User;
@@ -43,7 +44,8 @@ public class Part03StepVerifier {
 
 	// TODO Use StepVerifier to check that the flux parameter emits "foo" and "bar" elements then a RuntimeException error.
 	void expectFooBarError(Flux<String> flux) {
-		fail();
+		StepVerifier.create(flux).expectNext("foo","bar").expectError(RuntimeException.class);
+		//fail();
 	}
 
 //========================================================================================
@@ -51,14 +53,23 @@ public class Part03StepVerifier {
 	// TODO Use StepVerifier to check that the flux parameter emits a User with "swhite"username
 	// and another one with "jpinkman" then completes successfully.
 	void expectSkylerJesseComplete(Flux<User> flux) {
-		fail();
+		StepVerifier.create(flux).expectNextMatches(x->{
+					System.out.println(x.getUsername());
+				return User.SKYLER.getUsername().equals(x.getUsername());
+		})
+				.expectNextMatches(y->{
+					System.out.println(y.getUsername());
+					return User.JESSE.getUsername().equals(y.getUsername());
+				}).verifyComplete();
+		//fail();
 	}
 
 //========================================================================================
 
 	// TODO Expect 10 elements then complete and notice how long the test takes.
 	void expect10Elements(Flux<Long> flux) {
-		fail();
+		StepVerifier.create(flux).expectNext(0L, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L)
+				.expectComplete().verify();
 	}
 
 //========================================================================================

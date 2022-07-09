@@ -1,10 +1,7 @@
 package io.pivotal.literx;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Learn how to create Mono instances.
